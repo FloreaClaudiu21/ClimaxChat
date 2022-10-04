@@ -65,8 +65,8 @@ const ComunityPanel = ({
 			direction="right"
 			in={comunityPanel}
 		>
-			<Stack className="h-full w-full bg-slate-100 gap-1 shadow-md z-[130] mt-[110px] relative overflow-hidden">
-				<Stack className="group absolute w-full h-[140px] p-1 z-[120] bg-white">
+			<Stack className="relative h-full w-full gap-1 shadow-md z-[130] bg-slate-100 overflow-x-hidden">
+				<Stack className="group w-full h-[140px] p-1 z-[120] bg-white">
 					<Stack className="flex-row gap-1 justify-start flex-shrink place-items-center rounded-sm group-hover:bg-slate-200 p-1 delay-75 transition-all">
 						<Tooltip
 							arrow
@@ -107,11 +107,7 @@ const ComunityPanel = ({
 					</Stack>
 					<Divider />
 				</Stack>
-				<Stack
-					className={`flex-1 mt-[140px] mb-[60px] overflow-x-hidden ${
-						hasRes ? "mb-[60px]" : "mb-0"
-					}`}
-				>
+				<Stack className="flex-1">
 					<ComunityListItems
 						displayResults={displayResults}
 						main_user={user}
@@ -121,7 +117,7 @@ const ComunityPanel = ({
 						pagesSize={pagesSize}
 					/>
 					{hasRes && (
-						<Stack className="absolute w-full bg-white bottom-0 min-h-[60px] h-auto px-2 place-items-end justify-center shadow-md">
+						<Stack className="relative sm:sticky w-full bg-white bottom-0 h-[70px] px-2 place-items-end justify-center">
 							<CPagination
 								size="small"
 								page={curPage}

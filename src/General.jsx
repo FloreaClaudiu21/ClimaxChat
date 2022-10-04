@@ -5,25 +5,25 @@ import Logged from "./components/Logged/Logged";
 import Login from "./components/Login/Login";
 
 export const General = () => {
-    const [InfoMsg, setInfoMsg] = useState("");
-    const [InfoOpen, setInfoOpen] = useState(false);
+	const [InfoMsg, setInfoMsg] = useState("");
+	const [InfoOpen, setInfoOpen] = useState(false);
 	const [InfoSev, setInfoSev] = useState("success");
 	const { status, data: userresult } = useSigninCheck();
 	const closeInfo = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
+		if (reason === "clickaway") {
+			return;
+		}
 		setInfoOpen(false);
-        return
-    };
+		return;
+	};
 	const openInfo = useCallback((msg, severity = "success") => {
 		setInfoOpen(true);
 		setInfoMsg(msg);
 		setInfoSev(severity);
-        return
+		return;
 	}, []);
 	if (status === "loading") {
-		return <CircularProgress />
+		return <CircularProgress />;
 	}
 	return (
 		<>
@@ -31,6 +31,9 @@ export const General = () => {
 				open={InfoOpen}
 				onClose={closeInfo}
 				autoHideDuration={4000}
+				className={`${
+					closeInfo ? "pointer-events-none" : "pointer-events-auto"
+				}`}
 				TransitionComponent={(props) => (
 					<Slide
 						{...props}
@@ -46,7 +49,14 @@ export const General = () => {
 					{InfoMsg}
 				</Alert>
 			</Snackbar>
-			{userresult.signedIn ? <Logged user={userresult.user} openInfo={openInfo} /> : <Login openInfo={openInfo} />}
+			{userresult.signedIn ? (
+				<Logged
+					user={userresult.user}
+					openInfo={openInfo}
+				/>
+			) : (
+				<Login openInfo={openInfo} />
+			)}
 		</>
 	);
 };

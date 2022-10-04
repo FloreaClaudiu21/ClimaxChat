@@ -112,8 +112,8 @@ const FriendsPanel = ({
 			direction="right"
 			in={friendsPanel}
 		>
-			<Stack className="p-1 h-full w-full bg-slate-100 gap-1 shadow-md z-[130] mt-[110px] relative overflow-hidden">
-				<Stack className="group absolute w-full h-[70px] z-[120] bg-white">
+			<Stack className="relative h-full w-full bg-slate-100 gap-1 shadow-md z-[130] overflow-x-hidden">
+				<Stack className="group w-full p-1 h-[70px] z-[120] bg-white justify-center">
 					<Stack className="flex-row gap-1 justify-start flex-shrink place-items-center rounded-sm group-hover:bg-slate-200 p-1 delay-75 transition-all">
 						<Tooltip
 							arrow
@@ -130,93 +130,70 @@ const FriendsPanel = ({
 							Friends:
 						</Typography>
 					</Stack>
-					<Divider />
 				</Stack>
-				<Stack className="justify-start min-h-[50px] h-auto max-h-[240px] mt-[70px] overflow-y-auto overflow-x-hidden">
-					<List
-						className={`p-1`}
-						subheader={
-							<ListSubheader
-								component="div"
-								className="text-black bg-slate-200 rounded-md"
-							>
-								<Stack className="flex-row w-full place-items-center gap-1">
-									<Typography
-										variant="caption"
-										className="flex place-items-center justify-center"
-									>
-										Received Requests:{" "}
-										<span className="text-xs p-1 text-red-400">
-											{received_data?.data.length}
-										</span>
-									</Typography>
-									<IconButton
-										onClick={updateReceivedP}
-										className="w-4 h-4"
-									>
-										{receivedP ? (
-											<ArrowDropUp className="w-4 h-4" />
-										) : (
-											<ArrowDropDown className="w-4 h-4" />
-										)}
-									</IconButton>
-								</Stack>
-							</ListSubheader>
-						}
-					>
-						<Collapse in={receivedP}>
-							<ReceivePanelI
-								user={user}
-								openInfo={openInfo}
-								received_data={received_data}
-							/>
-						</Collapse>
-					</List>
+				<Stack className="mx-1 h-auto">
+					<Stack className="flex-row h-[40px] w-full place-items-center px-2 gap-1 bg-slate-200 rounded-md">
+						<Typography
+							variant="caption"
+							className="flex place-items-center justify-center"
+						>
+							Received Requests:{" "}
+							<span className="text-xs p-1 text-red-400">
+								{received_data?.data.length}
+							</span>
+						</Typography>
+						<IconButton
+							onClick={updateReceivedP}
+							className="w-4 h-4"
+						>
+							{receivedP ? (
+								<ArrowDropUp className="w-4 h-4" />
+							) : (
+								<ArrowDropDown className="w-4 h-4" />
+							)}
+						</IconButton>
+					</Stack>
+					<Collapse in={receivedP}>
+						<ReceivePanelI
+							user={user}
+							openInfo={openInfo}
+							received_data={received_data}
+						/>
+					</Collapse>
 				</Stack>
 				<Divider />
-				<Stack className="justify-start min-h-[50px] h-auto max-h-[250px] overflow-y-auto overflow-x-hidden">
-					<List
-						className="p-1"
-						subheader={
-							<ListSubheader
-								component="div"
-								className="text-black bg-slate-200 rounded-md"
+				<Stack className="mx-1 h-auto">
+					<Stack className="flex-row h-[40px] w-full place-items-center px-2 gap-1 bg-slate-200 rounded-md">
+						<Typography
+							variant="caption"
+							className="flex place-items-center justify-center"
+						>
+							Send Requests:{" "}
+							<span className="text-xs p-1 text-red-400">
+								{send_data?.data.length}
+							</span>
+							<IconButton
+								onClick={updateSendP}
+								className="w-4 h-4"
 							>
-								<Stack className="flex-row w-full place-items-center">
-									<Typography
-										variant="caption"
-										className="flex place-items-center justify-center"
-									>
-										Send Requests:{" "}
-										<span className="text-xs p-1 text-red-400">
-											{send_data?.data.length}
-										</span>
-										<IconButton
-											onClick={updateSendP}
-											className="w-4 h-4"
-										>
-											{sendP ? (
-												<ArrowDropUp className="w-4 h-4" />
-											) : (
-												<ArrowDropDown className="w-4 h-4" />
-											)}
-										</IconButton>
-									</Typography>
-								</Stack>
-							</ListSubheader>
-						}
-					>
-						<Collapse in={sendP}>
-							<SendPanelI
-								user={user}
-								openInfo={openInfo}
-								send_data={send_data}
-							/>
-						</Collapse>
-					</List>
+								{sendP ? (
+									<ArrowDropUp className="w-4 h-4" />
+								) : (
+									<ArrowDropDown className="w-4 h-4" />
+								)}
+							</IconButton>
+						</Typography>
+					</Stack>
+					<Collapse in={sendP}>
+						<SendPanelI
+							user={user}
+							openInfo={openInfo}
+							send_data={send_data}
+						/>
+					</Collapse>
 				</Stack>
 				<Divider />
-				<Stack className="h-[60px] shadow-sm w-full flex-row justify-center place-items-center pb-1">
+				<Stack className="p-1 gap-1 h-[60px] shadow-sm w-full flex-row justify-center place-items-center pb-1">
 					<InputBase
 						inputRef={searchInput}
 						placeholder="Search a user name..."
@@ -238,11 +215,7 @@ const FriendsPanel = ({
 						</IconButton>
 					</Tooltip>
 				</Stack>
-				<Stack
-					className={`flex-1 mb-[60px] overflow-x-hidden ${
-						hasRes ? "mb-[60px]" : "mb-0"
-					}`}
-				>
+				<Stack className={`flex-1`}>
 					<FriendPanelI
 						fire={fire}
 						hasRes={hasRes}
@@ -253,7 +226,7 @@ const FriendsPanel = ({
 						displayResults={displayResults}
 					/>
 					{hasRes && (
-						<Stack className="absolute w-full bg-white bottom-0 min-h-[60px] h-auto px-2 place-items-end justify-center shadow-md">
+						<Stack className="relative sm:sticky w-full bg-white bottom-0 min-h-[60px] h-auto px-2 place-items-end justify-center shadow-md">
 							<CPagination
 								size="small"
 								page={curPage}

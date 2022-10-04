@@ -8,24 +8,38 @@ import {
 	Tooltip,
 	Typography,
 } from "@mui/material";
-import React, { memo, useMemo, useState } from "react";
+import React, { memo, useEffect, useMemo } from "react";
 import nomsgs from "../../assets/nomsgs.gif";
+import ChatItem from "./ChatItem";
 import { CPagination } from "./Pagination";
 
-const DirectMsgs = ({ results }) => {
-	const [curPage, setCurPage] = useState(1);
+const DirectMsgs = ({
+	user,
+	results,
+	curPage,
+	pagesSize,
+	changePage,
+	setnewChat,
+	activeChat,
+	setActiveChat,
+	setChatPanel,
+	setActiveChatData,
+}) => {
 	const hasRes = useMemo(() => results.length > 0, [results]);
+	// SET THE DEFAULT ACTIVE CHAT
+	useEffect(() => {
+		activeChat === null && hasRes && setActiveChat(results[0].uid);
+	}, [hasRes, activeChat, results, setActiveChat]);
+	useEffect(() => {
+		activeChat && setChatPanel(true);
+	}, [activeChat, setChatPanel]);
 	return (
-		<Stack
-			className={`flex-1 overflow-x-hidden overflow-y-auto ${
-				hasRes ? "mb-[60px]" : "mb-0"
-			}`}
-		>
+		<Stack className="flex-1">
 			<List
-				className="p-1 "
+				className="p-1 h-full mb-2 gap-2 flex flex-col"
 				subheader={
 					<ListSubheader
-						component="div"
+						disableSticky
 						className="text-black bg-slate-200 rounded-md"
 					>
 						<Stack className="flex-row w-full place-items-center">
@@ -38,6 +52,7 @@ const DirectMsgs = ({ results }) => {
 							<Tooltip
 								arrow
 								title="Start a new chat.."
+								onClick={() => setnewChat(true)}
 							>
 								<IconButton>
 									<AddCommentSharp className="h-4 w-4" />
@@ -50,18 +65,20 @@ const DirectMsgs = ({ results }) => {
 				{hasRes ? (
 					results.map((chat) => {
 						return (
-							<ListItem
-								divider
-								key={chat.id}
-								className="h-16"
-							>
-								{chat.name}
-							</ListItem>
+							<ChatItem
+								key={chat.uid}
+								user={user}
+								uid={chat.uid}
+								setChatPanel={setChatPanel}
+								activeChat={activeChat}
+								setActiveChat={setActiveChat}
+								setActiveChatData={setActiveChatData}
+							/>
 						);
 					})
 				) : (
-					<ListItem className="justify-center mb-2">
-						<Stack className="justify-center place-items-center flex-shrink">
+					<ListItem className="justify-center place-items-start p-0">
+						<Stack className="justify-center place-items-center">
 							<img
 								src={nomsgs}
 								alt="Not found"
@@ -80,14 +97,14 @@ const DirectMsgs = ({ results }) => {
 				)}
 			</List>
 			{hasRes && (
-				<Stack className="absolute w-full bg-white bottom-0 min-h-[60px] h-auto px-2 place-items-end justify-center shadow-md">
+				<Stack className="relative sm:sticky w-full bg-white bottom-0 h-[70px] px-2 place-items-end justify-center">
 					<CPagination
 						size="small"
 						page={curPage}
 						defaultPage={1}
 						boundaryCount={2}
-						//onChange={changePage}
-						//count={pagesSize}
+						onChange={changePage}
+						count={pagesSize}
 						className="text-xs"
 					/>
 				</Stack>

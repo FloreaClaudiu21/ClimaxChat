@@ -5,7 +5,7 @@ import nomsgs from "../../assets/nomsgs.gif";
 
 const ComunityListItems = ({ displayResults, main_user, openInfo }) => {
 	return (
-		<List className="p-1">
+		<List className="p-1 h-full mb-2">
 			{displayResults.length > 0 ? (
 				<Stack className="relative">
 					{displayResults.map((u) => {
@@ -20,7 +20,7 @@ const ComunityListItems = ({ displayResults, main_user, openInfo }) => {
 					})}
 				</Stack>
 			) : (
-				<ListItem className="justify-center mb-2">
+				<ListItem className="justify-center place-items-start p-0">
 					<Stack className="justify-center place-items-center">
 						<img
 							src={nomsgs}

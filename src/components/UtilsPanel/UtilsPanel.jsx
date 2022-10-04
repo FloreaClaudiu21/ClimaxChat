@@ -10,7 +10,7 @@ const UtilsPanel = ({
 	executeSearch,
 	searchInput,
 	received_req_data,
-	friends_data
+	friends_data,
 }) => {
 	const received_reqs = received_req_data?.data.length;
 	const UpdateComunityPanel = useCallback(() => {
@@ -22,7 +22,7 @@ const UtilsPanel = ({
 		setFriendsPanel(true);
 	}, [setFriendsPanel, setMainPanel]);
 	return (
-		<Stack className="flex-row flex-wrap flex-shrink gap-2 p-2 pb-0 mt-[110px] h-auto justify-center">
+		<Stack className="flex-row flex-wrap flex-shrink gap-2 p-2 pb-0  h-auto justify-center">
 			<Tooltip
 				arrow
 				placement="top"
@@ -39,6 +39,7 @@ const UtilsPanel = ({
 			</Tooltip>
 			<Tooltip
 				arrow
+				placement="top"
 				title={`Show your friends list ${
 					received_reqs > 0
 						? " - " + received_reqs + " new friend requests"
@@ -63,7 +64,7 @@ const UtilsPanel = ({
 					)}
 				</Button>
 			</Tooltip>
-			<Stack className="w-full flex-row justify-center place-items-center gap-1">
+			<Stack className="sticky w-full flex-row justify-center place-items-center gap-1">
 				<InputBase
 					inputRef={searchInput}
 					onKeyDown={(e) => {
@@ -74,6 +75,7 @@ const UtilsPanel = ({
 				/>
 				<Tooltip
 					arrow
+					placement="top"
 					title="Search"
 				>
 					<IconButton

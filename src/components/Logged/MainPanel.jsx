@@ -1,10 +1,12 @@
 import { Box, CircularProgress, Divider, Skeleton, Slide } from "@mui/material";
 import { Stack } from "@mui/system";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useFirestoreDocData } from "reactfire";
+import { TermClass } from "../../helpers/TermSearch";
 import { UserDocs } from "../../helpers/UserDocuments";
 import DirectMsgs from "../DirectMsgs/DirectMsgs";
 import UtilsPanel from "../UtilsPanel/UtilsPanel";
+import CreateChatModal from "./Create/CreateChat";
 
 export const load = (status) => {
 	return status === "loading";
@@ -40,39 +42,45 @@ export const GhostItem = () => {
 const MainPanel = ({
 	fire,
 	user,
+	openInfo,
 	mainPanel,
 	setMainPanel,
 	setUserPanel,
 	setFriendsPanel,
 	setComunityPanel,
+	setActiveChat,
+	setChatPanel,
+	setActiveChatData,
+	activeChat,
 }) => {
 	const searchInput = useRef(null);
+	const [curPage, setCurPage] = useState(1);
+	const [newChat, setnewChat] = useState(false);
 	const [termResults, setTermResults] = useState([]);
 	const [displayResults, setDisplayResults] = useState([]);
 	const { chats: chatDoc, received_req, friends } = UserDocs(fire, user);
 	//////////////////////////////////////////////////////////////
-	const { status, data: chats_data } = useFirestoreDocData(chatDoc);
+	const { status, data } = useFirestoreDocData(chatDoc);
 	const { status: friends_s, data: friends_data } =
 		useFirestoreDocData(friends);
 	const { status: req_s, data: received_req_data } =
 		useFirestoreDocData(received_req);
-	if (load(status) || load(req_s) || load(friends_s)) return <GhostPanel />;
-	/*const { pagesSize, changePage, setResults, executeSearch } = TermSearch({
-		user,
-		data,
-		openInfo,
-		searchInput,
-		ItemPerPage,
-		curPage,
-		setCurPage,
-		termResults,
-		setTermResults,
-		setDisplayResults,
-	});
+	const { pagesSize, changePage, setResults, executeSearch } =
+		new TermClass().ChatSearch({
+			user,
+			data,
+			openInfo,
+			searchInput,
+			curPage,
+			setCurPage,
+			termResults,
+			setTermResults,
+			setDisplayResults,
+		});
 	useEffect(() => {
-		//setResults();
+		setResults();
 	}, [setResults]);
-	*/
+	if (load(status) || load(req_s) || load(friends_s)) return <GhostPanel />;
 	return (
 		<Slide
 			mountOnEnter
@@ -80,22 +88,39 @@ const MainPanel = ({
 			direction="right"
 			in={mainPanel}
 		>
-			<Stack className="absolute h-full w-full bg-slate-100 gap-1 shadow-md z-[130] overflow-hidden">
+			<Stack className="h-full w-full gap-1 z-[130] bg-slate-100">
 				<UtilsPanel
 					user={user}
+					openInfo={openInfo}
 					searchInput={searchInput}
 					setUserPanel={setUserPanel}
-					//executeSearch={executeSearch}
+					executeSearch={executeSearch}
 					setMainPanel={setMainPanel}
 					setFriendsPanel={setFriendsPanel}
 					setComunityPanel={setComunityPanel}
 					friends_data={friends_data}
 					received_req_data={received_req_data}
 				/>
-				<Divider className="w-[95%] mx-auto" />
+				<Divider />
 				<DirectMsgs
 					user={user}
 					results={displayResults}
+					curPage={curPage}
+					changePage={changePage}
+					pagesSize={pagesSize}
+					setnewChat={setnewChat}
+					activeChat={activeChat}
+					setChatPanel={setChatPanel}
+					setActiveChat={setActiveChat}
+					setActiveChatData={setActiveChatData}
+				/>
+				<CreateChatModal
+					user={user}
+					openInfo={openInfo}
+					newChat={newChat}
+					setnewChat={setnewChat}
+					chat_data={data}
+					friends_data={friends_data}
 				/>
 			</Stack>
 		</Slide>

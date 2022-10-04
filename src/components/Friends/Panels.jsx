@@ -44,7 +44,7 @@ const FriendsPanelItems = ({
 		remove_friend();
 	}, [remove_friend]);
 	return (
-		<List>
+		<List className="p-1 h-full mb-2">
 			{hasRes ? (
 				displayResults.map((u) => {
 					return (
@@ -59,7 +59,7 @@ const FriendsPanelItems = ({
 					);
 				})
 			) : (
-				<ListItem className="justify-center mb-2">
+				<ListItem className="justify-center place-items-start p-0">
 					<Stack className="justify-center place-items-center">
 						<img
 							src={nomsgs}
@@ -105,25 +105,27 @@ const FriendsPanelItems = ({
 const ReceivePanelItems = ({ user, openInfo, received_data }) => {
 	return (
 		<Stack>
-			{received_data?.data.length > 0 ? (
-				received_data.data.map((v) => {
-					return (
-						<ReceivedItem
-							user={v}
-							main_user={user}
-							openInfo={openInfo}
-							key={Math.random()}
-						/>
-					);
-				})
-			) : (
-				<Typography
-					variant="subtitle1"
-					className="text-gray-700 text-center text-xs p-2"
-				>
-					No friend request received
-				</Typography>
-			)}
+			<List className="p-1 h-full">
+				{received_data?.data.length > 0 ? (
+					received_data.data.map((v) => {
+						return (
+							<ReceivedItem
+								user={v}
+								main_user={user}
+								openInfo={openInfo}
+								key={Math.random()}
+							/>
+						);
+					})
+				) : (
+					<Typography
+						variant="subtitle1"
+						className="text-gray-700 text-center text-xs p-2"
+					>
+						No friend request received
+					</Typography>
+				)}
+			</List>
 		</Stack>
 	);
 };
@@ -131,25 +133,27 @@ const ReceivePanelItems = ({ user, openInfo, received_data }) => {
 const SendPanelItems = ({ user, openInfo, send_data }) => {
 	return (
 		<Stack>
-			{send_data?.data.length > 0 ? (
-				send_data.data.map((v) => {
-					return (
-						<SendItem
-							user={v}
-							main_user={user}
-							openInfo={openInfo}
-							key={Math.random()}
-						/>
-					);
-				})
-			) : (
-				<Typography
-					variant="subtitle1"
-					className="text-gray-700 text-center text-xs p-2"
-				>
-					No friend request send
-				</Typography>
-			)}
+			<List className="p-1 h-full">
+				{send_data?.data.length > 0 ? (
+					send_data.data.map((v) => {
+						return (
+							<SendItem
+								user={v}
+								main_user={user}
+								openInfo={openInfo}
+								key={Math.random()}
+							/>
+						);
+					})
+				) : (
+					<Typography
+						variant="subtitle1"
+						className="text-gray-700 text-center text-xs p-2"
+					>
+						No friend request send
+					</Typography>
+				)}
+			</List>
 		</Stack>
 	);
 };

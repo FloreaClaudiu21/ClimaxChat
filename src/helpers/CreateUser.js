@@ -20,6 +20,7 @@ export const CreateUser = (fire, user, setUserData, openInfo, setLoading) => {
 		blocks,
 		received_req,
 		chats,
+		notify,
 	} = UserDocs(fire, user);
 	setLoading(true);
 	const user_map = UserMap(user);
@@ -34,6 +35,7 @@ export const CreateUser = (fire, user, setUserData, openInfo, setLoading) => {
 				setDoc(received_req, { data: [] });
 				setDoc(blocks, { data: [] });
 				setDoc(chats, { data: [] });
+				setDoc(notify, { new: false, data: [] });
 			});
 			setUserData(user_map);
 		})
